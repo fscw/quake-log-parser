@@ -2,17 +2,20 @@
 
 ## Configuração Inicial do Projeto
 
-- [ ] Configurar o ambiente de desenvolvimento Golang
-  - [ ] Instalar Golang no sistema
-  - [ ] Configurar o módulo Go para o projeto (`go mod init quake_log_parser`)
+- [x] Configurar o ambiente de desenvolvimento Golang
+  - [x] Instalar Golang no sistema
+  - [x] Configurar o módulo Go para o projeto (`go mod init quake_log_parser`)
 
-- [ ] Estruturar o Projeto
-  - [ ] Criar a estrutura de diretórios e arquivos:
+- [x] Estruturar o Projeto
+  - [x] Criar a estrutura de diretórios e arquivos:
     - `main.go`
     - `parser/parser.go`
+    - `parser/parser_test.go`
     - `parser/match.go`
+    - `parser/match_test.go`
     - `parser/kill.go`
-    - `logs/qgames.log` (colocar o arquivo de log aqui)
+    - `parser/kill_test.go`
+    - `logs/qgames.log`
 
 ## Implementação das Funcionalidades
 
