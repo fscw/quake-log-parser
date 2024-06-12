@@ -14,8 +14,13 @@ func parsePlayer(line string) *models.Player {
 	return &models.Player{ID: playerID, Name: playerName}
 }
 
-func parseKill() {
-	return
+func parseKill(line string) models.Kill {
+	parts := strings.Split(line, " ")
+	killerID, _ := strconv.Atoi(parts[3])
+	victimID, _ := strconv.Atoi(parts[4])
+	modID, _ := strconv.Atoi(parts[5])
+
+	return models.Kill{KillerID: killerID, VictimID: victimID, ModID: modID}
 }
 
 func processKill() {
