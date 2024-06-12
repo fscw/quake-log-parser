@@ -5,6 +5,15 @@ import (
 	"strconv"
 	"strings"
 )
+
+func meansOfDeath(modID int) string {
+	if modName, ok := models.MeansOfDeath[modID]; ok {
+		return modName
+	}
+
+	return models.MeansOfDeath[models.MOD_UNKNOWN]
+}
+
 func parsePlayer(line string) *models.Player {
 	parts := strings.Split(line, " ")
 	playerID, _ := strconv.Atoi(parts[2])
