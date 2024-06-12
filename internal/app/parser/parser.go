@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+const worldKillerID = 1022
+
 func meansOfDeath(modID int) string {
 	if modName, ok := models.MeansOfDeath[modID]; ok {
 		return modName
@@ -32,8 +34,17 @@ func parseKill(line string) models.Kill {
 	return models.Kill{KillerID: killerID, VictimID: victimID, ModID: modID}
 }
 
-func processKill() {
-	return
+func processKill(match *models.Match, kill models.Kill) {
+	match.TotalKills++
+	modName := meansOfDeath(kill.ModID)
+
+	if kill.KillerID == worldKillerID {
+		match.Kills[kill.VictimID]--
+	} else {
+		match.Kills[kill.KillerID]++
+	}
+
+	match.KillsByMod[modName]++
 }
 
 func ParseLogFile() {
