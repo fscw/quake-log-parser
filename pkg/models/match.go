@@ -5,5 +5,5 @@ type Match struct {
 	TotalKills int
 	Players    map[int]*Player
 	Kills      map[int]int
-	KillsByMOD map[string]int
+	KillsByMod map[string]int
 }
