@@ -19,19 +19,19 @@
 
 ## Implementação das Funcionalidades
 
-- [x] Implementação da Função Principal (`main.go`)
+- [ ] Implementação da Função Principal (`main.go`)
   - [ ] Inicializar o parser e chamar as funções para processar o log e gerar relatórios
 
-- [x] Implementação do Parser (`parser/parser.go`)
-  - [x] Criar a função `ParseLogFile` para ler o arquivo de log
-  - [x] Implementar a lógica para identificar e separar cada partida
-  - [x] Implementar a função `parseKill` para extrair dados das linhas de kill
-  - [x] Implementar a função `processKill` para atualizar os dados da partida com base nos kills
-  - [x] Implementar a função `meansOfDeath` para mapear os códigos de morte para suas descrições
+- [ ] Implementação do Parser (`parser/parser.go`)
+  - [ ] Criar a função `ParseLogFile` para ler o arquivo de log
+  - [ ] Implementar a lógica para identificar e separar cada partida
+  - [ ] Implementar a função `parseKill` para extrair dados das linhas de kill
+  - [ ] Implementar a função `processKill` para atualizar os dados da partida com base nos kills
+  - [ ] Implementar a função `meansOfDeath` para mapear os códigos de morte para suas descrições
 
-- [x] Definições de Estruturas de Dados
-  - [x] Criar a estrutura `Match` para armazenar dados das partidas (`parser/match.go`)
-  - [x] Criar a estrutura `Kill` para armazenar dados de kills (`parser/kill.go`)
+- [ ] Definições de Estruturas de Dados
+  - [ ] Criar a estrutura `Match` para armazenar dados das partidas (`parser/match.go`)
+  - [ ] Criar a estrutura `Kill` para armazenar dados de kills (`parser/kill.go`)
 
 - [ ] Geração de Relatórios
   - [ ] Implementar a função `GenerateReport` para gerar relatórios detalhados para cada partida e exibi-los no console
