@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"bufio"
+	"os"
 	"quake_log_parser/pkg/models"
 	"strconv"
 	"strings"
@@ -47,6 +49,46 @@ func processKill(match *models.Match, kill models.Kill) {
 	match.KillsByMod[modName]++
 }
 
-func ParseLogFile() {
-	return
+func ParseLogFile(logFilePath string) ([]models.Match, error) {
+	logFile, err := os.Open(logFilePath)
+
+	if err != nil {
+		return nil, err
+	}
+	defer logFile.Close()
+
+	matches := []models.Match{}
+	currentMatch := models.Match{
+		Players:    make(map[int]*models.Player),
+		Kills:      make(map[int]int),
+		KillsByMod: make(map[string]int),
+	}
+	scanner := bufio.NewScanner(logFile)
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		if strings.Contains(line, "InitGame") {
+			if currentMatch.TotalKills > 0 {
+				matches = append(matches, currentMatch)
+			}
+			currentMatch = models.Match{
+				ID:         len(matches) + 1,
+				Players:    make(map[int]*models.Player),
+				Kills:      make(map[int]int),
+				KillsByMod: make(map[string]int),
+			}
+		} else if strings.Contains(line, "Kill") {
+			kill := parseKill(line)
+			processKill(&currentMatch, kill)
+		} else if strings.Contains(line, "ClientUserinfoChanged") {
+			player := parsePlayer(line)
+			currentMatch.Players[player.ID] = player
+		}
+	}
+
+	if currentMatch.TotalKills > 0 {
+		matches = append(matches, currentMatch)
+	}
+
+	return matches, scanner.Err()
 }
