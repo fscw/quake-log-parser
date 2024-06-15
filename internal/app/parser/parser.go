@@ -2,8 +2,10 @@ package parser
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"quake_log_parser/pkg/models"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -27,16 +29,37 @@ func parsePlayer(line string) *models.Player {
 	return &models.Player{ID: playerID, Name: playerName}
 }
 
-func parseKill(line string) models.Kill {
-	parts := strings.Split(line, " ")
-	killerID, _ := strconv.Atoi(parts[3])
-	victimID, _ := strconv.Atoi(parts[4])
-	modID, _ := strconv.Atoi(parts[5])
+func parseKill(logLine string) *models.Kill {
+	killDataRegex := regexp.MustCompile(`Kill:\s*(\d+)\s+(\d+)\s+(\d+):`)
 
-	return models.Kill{KillerID: killerID, VictimID: victimID, ModID: modID}
+	killData := killDataRegex.FindStringSubmatch(logLine)
+	if len(killData) < 4 {
+		fmt.Printf("Kill data not found on line: %s\n", logLine)
+		return nil
+	}
+
+	killerID, err := strconv.Atoi(killData[1])
+	if err != nil {
+		fmt.Printf("Error converting killerID: %s\n", killData[1])
+		return nil
+	}
+
+	victimID, err := strconv.Atoi(killData[2])
+	if err != nil {
+		fmt.Printf("Error converting victimID: %s\n", killData[2])
+		return nil
+	}
+
+	modID, err := strconv.Atoi(killData[3])
+	if err != nil {
+		fmt.Printf("Error converting modID: %s\n", killData[3])
+		return nil
+	}
+
+	return &models.Kill{KillerID: killerID, VictimID: victimID, ModID: modID}
 }
 
-func processKill(match *models.Match, kill models.Kill) {
+func processKill(match *models.Match, kill *models.Kill) {
 	match.TotalKills++
 	modName := meansOfDeath(kill.ModID)
 
