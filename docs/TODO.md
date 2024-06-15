@@ -1,74 +1,72 @@
-# Tasklist para o Projeto de Parsing de Logs do Quake 3 Arena
+# Tasklist for the Quake 3 Arena Log Parsing Project
 
-## Configuração Inicial do Projeto
+## Initial Project Setup
 
-- [x] Configurar o ambiente de desenvolvimento Golang
-  - [x] Instalar Golang no sistema
-  - [x] Configurar o módulo Go para o projeto (`go mod init quake_log_parser`)
+- [x] Set up the Golang development environment
+  - [x] Install Golang on the system
+  - [x] Configure the Go module for the project (`go mod init quake_log_parser`)
 
-- [x] Estruturar o Projeto
-  - [x] Criar a estrutura de diretórios e arquivos:
+- [x] Structure the Project
+  - [x] Create the directory and file structure:
     - `main.go`
-    - `parser/parser.go`
-    - `parser/parser_test.go`
-    - `parser/match.go`
-    - `parser/match_test.go`
-    - `parser/kill.go`
-    - `parser/kill_test.go`
+    - `app/parser/parser.go`
+    - `app/parser/parser_test.go`
+    - `app/reports/reports.go`
+    - `app/reports/reports_test.go`
     - `logs/qgames.log`
 
-## Implementação das Funcionalidades
+## Feature Implementation
 
-- [x] Implementação da Função Principal (`main.go`)
-  - [ ] Inicializar o parser e chamar as funções para processar o log e gerar relatórios
+- [x] Implement the Main Function (`main.go`)
+  - [x] Initialize the parser and call functions to process the log and generate reports
 
-- [x] Implementação do Parser (`parser/parser.go`)
-  - [x] Criar a função `ParseLogFile` para ler o arquivo de log
-  - [x] Implementar a lógica para identificar e separar cada partida
-  - [x] Implementar a função `parseKill` para extrair dados das linhas de kill
-  - [x] Implementar a função `processKill` para atualizar os dados da partida com base nos kills
-  - [x] Implementar a função `meansOfDeath` para mapear os códigos de morte para suas descrições
+- [x] Implement the Parser (`parser/parser.go`)
+  - [x] Create the `ParseLogFile` function to read the log file
+  - [x] Implement logic to identify and separate each match
+  - [x] Implement the `parseKill` function to extract data from kill lines
+  - [x] Implement the `processKill` function to update match data based on kills
+  - [x] Implement the `meansOfDeath` function to map death codes to their descriptions
 
-- [x] Definições de Estruturas de Dados
-  - [x] Criar a estrutura `Match` para armazenar dados das partidas (`parser/match.go`)
-  - [x] Criar a estrutura `Kill` para armazenar dados de kills (`parser/kill.go`)
+- [x] Define Data Structures
+  - [x] Create the `Match` structure to store match data (`parser/match.go`)
+  - [x] Create the `Kill` structure to store kill data (`parser/kill.go`)
 
-- [ ] Geração de Relatórios
-  - [ ] Implementar a função `GenerateReport` para gerar relatórios detalhados para cada partida e exibi-los no console
+- [x] Report Generation
+  - [x] Implement the `GenerateReport` function to generate detailed reports for each match and display them in the console
 
-## Testes e Validações
+## Testing and Validation
 
-- [ ] Testes de Unidade
-  - [ ] Escrever testes unitários para a função `ParseLogFile`
-  - [ ] Escrever testes unitários para a função `parseKill`
-  - [ ] Escrever testes unitários para a função `processKill`
-  - [ ] Escrever testes unitários para a função `meansOfDeath`
+- [ ] Unit Tests
+  - [ ] Write unit tests for the `ParseLogFile` function
+  - [ ] Write unit tests for the `parseKill` function
+  - [ ] Write unit tests for the `processKill` function
+  - [ ] Write unit tests for the `meansOfDeath` function
 
-- [ ] Testes Funcionais
-  - [ ] Testar o fluxo completo de leitura do arquivo de log e geração de relatórios
-  - [ ] Validar se os dados do relatório correspondem às expectativas baseadas no log de exemplo
+- [ ] Functional Tests
+  - [ ] Test the complete flow of reading the log file and generating reports
+  - [ ] Validate that the report data matches expectations based on the sample log
 
-## Melhorias e Otimizações
+## Improvements and Optimizations
 
-- [ ] Melhorias de Performance
-  - [ ] Otimizar a leitura do arquivo de log para grandes volumes de dados
-  - [ ] Avaliar e implementar melhorias na eficiência do processamento de kills e partidas
+- [ ] Performance Improvements
+  - [ ] Optimize log file reading for large data volumes
+  - [ ] Evaluate and implement improvements in the efficiency of kill and match processing
 
-- [ ] Tratamento de Erros
-  - [ ] Implementar tratamentos de erros robustos para leitura e parsing de arquivos
-  - [ ] Garantir que erros sejam logados de forma clara e informativa
+- [ ] Error Handling
+  - [ ] Implement robust error handling for file reading and parsing
+  - [ ] Ensure errors are logged clearly and informatively
 
-## Documentação e Finalização
+## Documentation and Finalization
 
-- [ ] Documentação do Código
-  - [ ] Documentar todas as funções com comentários claros e descritivos
-  - [ ] Criar um README com instruções para configuração e execução do projeto
+- [ ] Code Documentation
+  - [ ] Document all functions with clear and descriptive comments
+  - [x] Create a README with setup and execution instructions for the project
 
-- [ ] Refinamento Final
-  - [ ] Revisar o código para limpeza e padronização
-  - [ ] Realizar testes finais e validação completa do sistema
+- [ ] Final Refinement
+  - [ ] Review code for cleanup and standardization
+  - [ ] Perform final testing and complete system validation
 
-## Tarefas Adicionais (Opcional)
+## Additional Tasks (Optional)
 
-- [ ] Geração de Relatórios Adicionais
-  - [ ] Implementar a geração de relatórios de mortes agrupadas por causa de morte
+- [x] Additional Report Generation
+  - [x] Implement the generation of reports for deaths grouped by cause of death
