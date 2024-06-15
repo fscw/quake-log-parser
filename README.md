@@ -38,7 +38,7 @@ This Go application parses Quake 3 Arena server log files to extract match infor
 
 1. **Prepare your log file:**
 
-   Ensure you have a Quake 3 Arena server log file you want to parse.
+   Ensure you have a Quake 3 Arena server log file you want to parse. Access folder `logs`, open file `qgames.log` then paste the log you want to be analyzed.
 
 2. **Run the parser:**
 
