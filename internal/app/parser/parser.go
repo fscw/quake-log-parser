@@ -2,8 +2,10 @@ package parser
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"quake_log_parser/pkg/models"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -18,25 +20,57 @@ func meansOfDeath(modID int) string {
 	return models.MeansOfDeath[models.MOD_UNKNOWN]
 }
 
-func parsePlayer(line string) *models.Player {
-	parts := strings.Split(line, " ")
-	playerID, _ := strconv.Atoi(parts[2])
-	infoParts := strings.Split(parts[3], "\\")
-	playerName := infoParts[1]
+func parsePlayer(logLine string) *models.Player {
+	playerDataRegex := regexp.MustCompile(`ClientUserinfoChanged:\s*(\d+)\s*n\\([^\\]+)\\`)
+
+	playerData := playerDataRegex.FindStringSubmatch(logLine)
+	if len(playerData) < 3 {
+		fmt.Printf("Player data not found on line: %s\n", logLine)
+		return nil
+	}
+
+	playerID, err := strconv.Atoi(playerData[1])
+	if err != nil {
+		fmt.Printf("Error converting playerID: %s\n", playerData[1])
+		return nil
+	}
+
+	playerName := playerData[2]
 
 	return &models.Player{ID: playerID, Name: playerName}
 }
 
-func parseKill(line string) models.Kill {
-	parts := strings.Split(line, " ")
-	killerID, _ := strconv.Atoi(parts[3])
-	victimID, _ := strconv.Atoi(parts[4])
-	modID, _ := strconv.Atoi(parts[5])
+func parseKill(logLine string) *models.Kill {
+	killDataRegex := regexp.MustCompile(`Kill:\s*(\d+)\s+(\d+)\s+(\d+):`)
 
-	return models.Kill{KillerID: killerID, VictimID: victimID, ModID: modID}
+	killData := killDataRegex.FindStringSubmatch(logLine)
+	if len(killData) < 4 {
+		fmt.Printf("Kill data not found on line: %s\n", logLine)
+		return nil
+	}
+
+	killerID, err := strconv.Atoi(killData[1])
+	if err != nil {
+		fmt.Printf("Error converting killerID: %s\n", killData[1])
+		return nil
+	}
+
+	victimID, err := strconv.Atoi(killData[2])
+	if err != nil {
+		fmt.Printf("Error converting victimID: %s\n", killData[2])
+		return nil
+	}
+
+	modID, err := strconv.Atoi(killData[3])
+	if err != nil {
+		fmt.Printf("Error converting modID: %s\n", killData[3])
+		return nil
+	}
+
+	return &models.Kill{KillerID: killerID, VictimID: victimID, ModID: modID}
 }
 
-func processKill(match *models.Match, kill models.Kill) {
+func processKill(match *models.Match, kill *models.Kill) {
 	match.TotalKills++
 	modName := meansOfDeath(kill.ModID)
 
@@ -66,8 +100,8 @@ func ParseLogFile(logFilePath string) ([]models.Match, error) {
 	scanner := bufio.NewScanner(logFile)
 
 	for scanner.Scan() {
-		line := scanner.Text()
-		if strings.Contains(line, "InitGame") {
+		logLine := scanner.Text()
+		if strings.Contains(logLine, "InitGame") {
 			if currentMatch.TotalKills > 0 {
 				matches = append(matches, currentMatch)
 			}
@@ -77,12 +111,14 @@ func ParseLogFile(logFilePath string) ([]models.Match, error) {
 				Kills:      make(map[int]int),
 				KillsByMod: make(map[string]int),
 			}
-		} else if strings.Contains(line, "Kill") {
-			kill := parseKill(line)
+		} else if strings.Contains(logLine, "Kill") {
+			kill := parseKill(logLine)
 			processKill(&currentMatch, kill)
-		} else if strings.Contains(line, "ClientUserinfoChanged") {
-			player := parsePlayer(line)
-			currentMatch.Players[player.ID] = player
+		} else if strings.Contains(logLine, "ClientUserinfoChanged") {
+			player := parsePlayer(logLine)
+			if player != nil {
+				currentMatch.Players[player.ID] = player
+			}
 		}
 	}
 
