@@ -20,11 +20,22 @@ func meansOfDeath(modID int) string {
 	return models.MeansOfDeath[models.MOD_UNKNOWN]
 }
 
-func parsePlayer(line string) *models.Player {
-	parts := strings.Split(line, " ")
-	playerID, _ := strconv.Atoi(parts[2])
-	infoParts := strings.Split(parts[3], "\\")
-	playerName := infoParts[1]
+func parsePlayer(logLine string) *models.Player {
+	playerDataRegex := regexp.MustCompile(`ClientUserinfoChanged:\s*(\d+)\s*n\\([^\\]+)\\`)
+
+	playerData := playerDataRegex.FindStringSubmatch(logLine)
+	if len(playerData) < 3 {
+		fmt.Printf("Player data not found on line: %s\n", logLine)
+		return nil
+	}
+
+	playerID, err := strconv.Atoi(playerData[1])
+	if err != nil {
+		fmt.Printf("Error converting playerID: %s\n", playerData[1])
+		return nil
+	}
+
+	playerName := playerData[2]
 
 	return &models.Player{ID: playerID, Name: playerName}
 }
