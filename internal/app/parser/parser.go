@@ -66,8 +66,8 @@ func ParseLogFile(logFilePath string) ([]models.Match, error) {
 	scanner := bufio.NewScanner(logFile)
 
 	for scanner.Scan() {
-		line := scanner.Text()
-		if strings.Contains(line, "InitGame") {
+		logLine := scanner.Text()
+		if strings.Contains(logLine, "InitGame") {
 			if currentMatch.TotalKills > 0 {
 				matches = append(matches, currentMatch)
 			}
@@ -77,12 +77,14 @@ func ParseLogFile(logFilePath string) ([]models.Match, error) {
 				Kills:      make(map[int]int),
 				KillsByMod: make(map[string]int),
 			}
-		} else if strings.Contains(line, "Kill") {
-			kill := parseKill(line)
+		} else if strings.Contains(logLine, "Kill") {
+			kill := parseKill(logLine)
 			processKill(&currentMatch, kill)
-		} else if strings.Contains(line, "ClientUserinfoChanged") {
-			player := parsePlayer(line)
-			currentMatch.Players[player.ID] = player
+		} else if strings.Contains(logLine, "ClientUserinfoChanged") {
+			player := parsePlayer(logLine)
+			if player != nil {
+				currentMatch.Players[player.ID] = player
+			}
 		}
 	}
 
