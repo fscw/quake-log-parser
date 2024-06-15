@@ -42,38 +42,10 @@ This Go application parses Quake 3 Arena server log files to extract match infor
 
 2. **Run the parser:**
 
-   Modify the `main.go` file or create a new file to call the `ParseLogFile` function.
+   On `cmd/quakeparser` folder, run:
 
-   ```go
-   package main
-
-   import (
-       "fmt"
-       "quake_log_parser/internal/app/parser"
-   )
-
-   func main() {
-       logFilePath := "path/to/your/logfile.log"
-       matches, err := parser.ParseLogFile(logFilePath)
-       if err != nil {
-           fmt.Printf("Error parsing log file: %s\n", err)
-           return
-       }
-
-       for _, match := range matches {
-           fmt.Printf("Match %d:\n", match.ID)
-           fmt.Printf("Total Kills: %d\n", match.TotalKills)
-           fmt.Println("Players:")
-           for _, player := range match.Players {
-               fmt.Printf(" - %s (ID: %d)\n", player.Name, player.ID)
-           }
-           fmt.Println("Kills by Means of Death:")
-           for mod, count := range match.KillsByMod {
-               fmt.Printf(" - %s: %d\n", mod, count)
-           }
-           fmt.Println()
-       }
-   }
+   ```bash
+   go run main.go
    ```
 
 3. **Build and run the application:**
