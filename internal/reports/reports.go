@@ -8,24 +8,24 @@ import (
 func GenerateReport(match models.Match) string {
 	report := fmt.Sprintf("Match %d:\n", match.ID)
 	report += fmt.Sprintf("Total Kills: %d\n", match.TotalKills)
-	report += "Players:"
+	report += "Players:\n"
 
 	for _, player := range match.Players {
-		report += player.Name + ", "
+		report += fmt.Sprintf(" - %s (ID: %d)\n", player.Name, player.ID)
 	}
 
-	report += "\n Kills:\n"
+	report += "Kills:\n"
 
 	for id, kills := range match.Kills {
 		if player, ok := match.Players[id]; ok {
-			report += fmt.Sprintf("%s: %d\n", player.Name, kills)
+			report += fmt.Sprintf(" - %s: %d\n", player.Name, kills)
 		}
 	}
 
 	report += "Kills by Means of Death:\n"
 
 	for mod, count := range match.KillsByMod {
-		report += fmt.Sprintf("%s: %d\n", mod, count)
+		report += fmt.Sprintf(" - %s: %d\n", mod, count)
 	}
 
 	report += "\n"
